@@ -5,49 +5,49 @@
 #
 # install type safe
 #
-find_package(type_safe QUIET)
-if(NOT type_safe_FOUND)
-    message(STATUS "Installing type_safe via submodule")
-    execute_process(COMMAND git submodule update --init -- external/type_safe
-                    WORKING_DIRECTORY ${CMAKE_CURRENT_SOURCE_DIR})
-    add_subdirectory(${CMAKE_CURRENT_SOURCE_DIR}/external/type_safe EXCLUDE_FROM_ALL)
-endif()
+#find_package(type_safe QUIET)
+#if(NOT type_safe_FOUND)
+#    message(STATUS "Installing type_safe via submodule")
+#    execute_process(COMMAND git submodule update --init -- external/type_safe
+#                    WORKING_DIRECTORY ${CMAKE_CURRENT_SOURCE_DIR})
+#    add_subdirectory(${CMAKE_CURRENT_SOURCE_DIR}/external/type_safe EXCLUDE_FROM_ALL)
+#endif()
 
-#
-# install the tiny-process-library
-#
-message(STATUS "Installing tiny-process-library via submodule")
-execute_process(COMMAND git submodule update --init -- external/tiny-process-library
-                WORKING_DIRECTORY ${CMAKE_CURRENT_SOURCE_DIR})
-find_package(Threads REQUIRED QUIET)
+##
+## install the tiny-process-library
+##
+#message(STATUS "Installing tiny-process-library via submodule")
+#execute_process(COMMAND git submodule update --init -- external/tiny-process-library
+#                WORKING_DIRECTORY ${CMAKE_CURRENT_SOURCE_DIR})
+#find_package(Threads REQUIRED QUIET)
 
-# create a target here instead of using the one provided
-set(tiny_process_dir ${CMAKE_CURRENT_SOURCE_DIR}/external/tiny-process-library)
-if(WIN32)
-    add_library(_cppast_tiny_process EXCLUDE_FROM_ALL
-                    ${tiny_process_dir}/process.hpp
-                    ${tiny_process_dir}/process.cpp
-                    ${tiny_process_dir}/process_win.cpp)
-else()
-    add_library(_cppast_tiny_process EXCLUDE_FROM_ALL
-                    ${tiny_process_dir}/process.hpp
-                    ${tiny_process_dir}/process.cpp
-                    ${tiny_process_dir}/process_unix.cpp)
-endif()
-target_include_directories(_cppast_tiny_process PUBLIC ${tiny_process_dir})
-target_link_libraries(_cppast_tiny_process PUBLIC Threads::Threads)
-set_target_properties(_cppast_tiny_process PROPERTIES CXX_STANDARD 11)
+## create a target here instead of using the one provided
+#set(tiny_process_dir ${CMAKE_CURRENT_SOURCE_DIR}/external/tiny-process-library)
+#if(WIN32)
+#    add_library(_cppast_tiny_process EXCLUDE_FROM_ALL
+#                    ${tiny_process_dir}/process.hpp
+#                    ${tiny_process_dir}/process.cpp
+#                    ${tiny_process_dir}/process_win.cpp)
+#else()
+#    add_library(_cppast_tiny_process EXCLUDE_FROM_ALL
+#                    ${tiny_process_dir}/process.hpp
+#                    ${tiny_process_dir}/process.cpp
+#                    ${tiny_process_dir}/process_unix.cpp)
+#endif()
+#target_include_directories(_cppast_tiny_process PUBLIC ${tiny_process_dir})
+#target_link_libraries(_cppast_tiny_process PUBLIC Threads::Threads)
+#set_target_properties(_cppast_tiny_process PROPERTIES CXX_STANDARD 11)
 
-#
-# install cxxopts, if needed
-#
-if(build_tool)
-    message(STATUS "Installing cxxopts via submodule")
-    execute_process(COMMAND git submodule update --init -- external/cxxopts
-                    WORKING_DIRECTORY ${CMAKE_CURRENT_SOURCE_DIR})
+##
+## install cxxopts, if needed
+##
+#if(build_tool)
+#    message(STATUS "Installing cxxopts via submodule")
+#    execute_process(COMMAND git submodule update --init -- external/cxxopts
+#                    WORKING_DIRECTORY ${CMAKE_CURRENT_SOURCE_DIR})
 
-    add_subdirectory(${CMAKE_CURRENT_SOURCE_DIR}/external/cxxopts EXCLUDE_FROM_ALL)
-endif()
+#    add_subdirectory(${CMAKE_CURRENT_SOURCE_DIR}/external/cxxopts EXCLUDE_FROM_ALL)
+#endif()
 
 #
 # install libclang
@@ -216,10 +216,11 @@ function(_cppast_find_libclang config_tool min_version force)
     endif()
 endfunction()
 
-set(llvm_min_version 4.0.0)
+set(llvm_min_version 4.0.1)
+set(LLVM_DOWNLOAD_OS_NAME debian8)
 
 if(NOT DEFINED LLVM_PREFERRED_VERSION)
-    set(LLVM_PREFERRED_VERSION 4.0.0 CACHE STRING "the preferred LLVM version")
+    set(LLVM_PREFERRED_VERSION 4.0.1 CACHE STRING "the preferred LLVM version")
 endif()
 
 if(DEFINED LLVM_VERSION_EXPLICIT)

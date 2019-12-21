@@ -42,7 +42,7 @@ option(CPPAST_BUILD_TOOL "whether or not to build the tool" OFF)
 #    set(build_tool OFF)
 #endif()
 
-#include(external/external.cmake)
+include(external/external.cmake)
 
 #if(build_test AND CPPAST_TEST_GCOV AND (CMAKE_CXX_COMPILER_ID STREQUAL "GNU"))
 #    list(APPEND CMAKE_MODULE_PATH "${CMAKE_SOURCE_DIR}/cmake")
