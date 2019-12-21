@@ -18,6 +18,8 @@ find_package(type_safe CONFIG REQUIRED)
 hunter_add_package(tiny-process-library)
 find_package(tiny-process-library CONFIG REQUIRED)
 
+# TODO libclang via hunter
+
 # options
 option(CPPAST_BUILD_TEST "whether or not to build the tests" OFF)
 option(CPPAST_BUILD_EXAMPLE "whether or not to build the examples" OFF)
