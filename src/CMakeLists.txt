@@ -104,8 +104,9 @@ set(libclang_source
 add_library(cppast ${detail_header} ${header} ${source} ${libclang_source})
 target_compile_features(cppast PUBLIC cxx_std_11)
 target_include_directories(cppast PRIVATE ../include SYSTEM INTERFACE ../include)
-target_link_libraries(cppast PUBLIC type_safe tiny-process-library::tiny-process-library _cppast_libclang)
+target_link_libraries(cppast PUBLIC type_safe tiny-process-library::tiny-process-library ${llvm_libs})
 target_compile_definitions(cppast PUBLIC
+                                CPPAST_CLANG_BINARY="${LLVM_ROOT}/bin/clang"
                                 CPPAST_VERSION_MINOR="${cppast_VERSION_MINOR}"
                                 CPPAST_VERSION_MAJOR="${cppast_VERSION_MAJOR}"
                                 CPPAST_VERSION_STRING="${cppast_VERSION}")

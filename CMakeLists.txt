@@ -18,8 +18,12 @@ find_package(type_safe CONFIG REQUIRED)
 hunter_add_package(tiny-process-library)
 find_package(tiny-process-library CONFIG REQUIRED)
 
-hunter_add_package(Clang)
-# TODO libclang via hunter
+hunter_add_package(LLVM)
+find_package(LLVM CONFIG REQUIRED)
+
+include_directories(${LLVM_INCLUDE_DIRS})
+add_definitions(${LLVM_DEFINITIONS})
+llvm_map_components_to_libnames(llvm_libs support core) # TODO we need only libclang ....
 
 # options
 option(CPPAST_BUILD_TEST "whether or not to build the tests" OFF)
