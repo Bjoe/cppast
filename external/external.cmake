@@ -249,4 +249,4 @@ target_compile_definitions(_cppast_libclang INTERFACE
                            CPPAST_CLANG_BINARY="${CLANG_BINARY}"
                            CPPAST_CLANG_VERSION_STRING="${LLVM_VERSION}")
 
-set(llvm_libs _cppast_libclang)
+add_library(libclang ALIAS _cppast_libclang)

@@ -35,7 +35,7 @@ if(HUNTER_ENABLED AND NOT CPPAST_BUILD_EXTERNAL)
     include_directories(${LLVM_INCLUDE_DIRS})
     add_definitions(${LLVM_DEFINITIONS})
     llvm_map_components_to_libnames(llvm_libs support core) # How we can compile only libclang?
-    list(APPEND llvm_libs clang) # Why and how we can add libclang?
+    find_package(Clang CONFIG REQUIRED)
 endif()
 
 if(CPPAST_BUILD_TEST AND CPPAST_TEST_GCOV AND (CMAKE_CXX_COMPILER_ID STREQUAL "GNU"))
