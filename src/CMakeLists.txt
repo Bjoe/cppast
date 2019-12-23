@@ -103,7 +103,9 @@ set(libclang_source
 
 add_library(cppast ${detail_header} ${header} ${source} ${libclang_source})
 target_compile_features(cppast PUBLIC cxx_std_11)
-target_include_directories(cppast PRIVATE ../include SYSTEM INTERFACE ../include)
+target_include_directories(cppast PRIVATE ../include SYSTEM INTERFACE
+    $<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}/include>
+    $<INSTALL_INTERFACE:include>)
 target_link_libraries(cppast PUBLIC type_safe tiny-process-library::tiny-process-library ${llvm_libs})
 target_compile_definitions(cppast PUBLIC
                                 CPPAST_CLANG_BINARY="${LLVM_ROOT}/bin/clang"
@@ -119,3 +121,52 @@ target_compile_options(cppast PRIVATE
                            # MSVC warnings
                            $<$<CXX_COMPILER_ID:MSVC>:
                            /WX /W4>)
+
+# Introduce variables:
+# * CMAKE_INSTALL_LIBDIR
+# * CMAKE_INSTALL_BINDIR
+# * CMAKE_INSTALL_INCLUDEDIR
+include(GNUInstallDirs)
+
+set(config_install_dir "${CMAKE_INSTALL_LIBDIR}/cmake/${PROJECT_NAME}")
+set(generated_dir "${CMAKE_CURRENT_BINARY_DIR}/generated")
+set(version_config "${generated_dir}/${PROJECT_NAME}ConfigVersion.cmake")
+set(project_config "${generated_dir}/${PROJECT_NAME}Config.cmake")
+set(TARGETS_EXPORT_NAME "${PROJECT_NAME}Targets")
+set(namespace "${PROJECT_NAME}::")
+
+install(TARGETS cppast
+ EXPORT "${TARGETS_EXPORT_NAME}"
+ LIBRARY DESTINATION ${CMAKE_INSTALL_LIBDIR}
+ ARCHIVE DESTINATION ${CMAKE_INSTALL_LIBDIR}
+)
+
+install(FILES ${detail_header} ${header} DESTINATION ${CMAKE_INSTALL_INCLUDEDIR})
+
+include(CMakePackageConfigHelpers)
+
+# Use:
+# * PROJECT_VERSION
+write_basic_package_version_file(
+   "${version_config}" COMPATIBILITY SameMajorVersion
+)
+
+# Use:
+# * TARGETS_EXPORT_NAME
+# * PROJECT_NAME
+configure_package_config_file(
+   "${CMAKE_SOURCE_DIR}/cmake/Config.cmake.in"
+   "${project_config}"
+   INSTALL_DESTINATION "${config_install_dir}"
+)
+
+install(
+   FILES "${project_config}" "${version_config}"
+   DESTINATION "${config_install_dir}"
+)
+
+install(
+   EXPORT "${TARGETS_EXPORT_NAME}"
+   NAMESPACE "${namespace}"
+   DESTINATION "${config_install_dir}"
+)
