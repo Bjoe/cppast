@@ -104,7 +104,7 @@ set(libclang_source
 add_library(cppast ${detail_header} ${header} ${source} ${libclang_source})
 target_compile_features(cppast PUBLIC cxx_std_11)
 target_include_directories(cppast PRIVATE ../include SYSTEM INTERFACE
-    $<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}/include>
+    $<BUILD_INTERFACE:${CMAKE_SOURCE_DIR}/include>
     $<INSTALL_INTERFACE:include>)
 target_link_libraries(cppast PUBLIC type_safe tiny-process-library::tiny-process-library ${llvm_libs})
 target_compile_definitions(cppast PUBLIC
@@ -141,7 +141,7 @@ install(TARGETS cppast
  ARCHIVE DESTINATION ${CMAKE_INSTALL_LIBDIR}
 )
 
-install(FILES ${detail_header} ${header} DESTINATION ${CMAKE_INSTALL_INCLUDEDIR})
+install(DIRECTORY ${CMAKE_SOURCE_DIR}/include/ DESTINATION ${CMAKE_INSTALL_INCLUDEDIR})
 
 include(CMakePackageConfigHelpers)
 
